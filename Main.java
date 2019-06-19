@@ -15,8 +15,7 @@ public class Main {
         readboard(myArray);
         game(myArray);
 
-        //System.out.println(myArray[0][2]);
-
+       
         // pirma eilutes rules
         // pop up su sudoku taisyklem
         // sukurti delete funkcija +
