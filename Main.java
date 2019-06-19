@@ -12,27 +12,35 @@ public class Main {
         int columns = 9;
         int [][] myArray = new int[rows][columns];
 
-        readboard(rows, columns, myArray);
-        game(rows, columns, myArray);
-
+        readboard(myArray);
+        game(myArray);
 
         //System.out.println(myArray[0][2]);
 
+        // pirma eilutes rules
+        // pop up su sudoku taisyklem
+        // sukurti delete funkcija +
+        // sukurti cubu tikrinimo funkcija
+        // sukurti eiliu tikrinimo funkcija i sonus ir apacia
+        // level selection
+
     }
 
-    public static void readboard(int rows, int columns, int[][] myArray){
+    private static void readboard( int[][] myArray)
+    {
         try{
             int sk = 0;
-            Scanner sc = new Scanner(new BufferedReader(new FileReader("G:\\Intellij projektukai\\Sudoku\\src\\file.txt")));
+            Scanner sc = new Scanner(new BufferedReader(new FileReader("G:\\Intellij projektukai\\Sudoku\\src\\board.txt")));
+            System.out.println("Board: " + "\n");
             System.out.println("    0 1 2  3 4 5  6 7 8" + "\n");
             while(sc.hasNextLine()) {
                 for (int i = 0; i < myArray.length; i++) {
-                    System.out.print(sk + " - ");
-                    sk++;
                     if(i == 3 || i == 6) System.out.println(); // tarpai tarp 3 x 3 cubu i apacia
+                    System.out.print(sk + "   ");
+                    sk++;
                     String[] line = sc.nextLine().trim().split(" ");
                     for (int j = 0; j < line.length; j++) {
-                        if(j == 3 || j == 6 || j == 9) System.out.print(" "); // tarpai tarp 3 x 3 cubu i sona
+                        if(j == 3 || j == 6) System.out.print(" "); // tarpai tarp 3 x 3 cubu i sona
                         myArray[i][j] = Integer.parseInt(line[j]);
                         System.out.print(myArray[i][j] + " ");
                     }
@@ -49,48 +57,81 @@ public class Main {
 
     }
 
-    public static void board(int rows, int columns, int[][] myArray)
+    private static void board(int[][] myArray)
     {
+        int sk = 0;
         System.out.println("\n");
+        System.out.println("Board: " + "\n");
+        System.out.println("    0 1 2  3 4 5  6 7 8" + "\n");
         for(int i = 0; i < 9; i++)
         {
-            if(i == 3 || i == 6) System.out.println();
+            if(i == 3 || i == 6) System.out.println(); // tarpai tarp 3 x 3 cubu i apacia
+            System.out.print(sk + "   ");
+            sk++;
             for(int j = 0; j < 9; j++)
             {
-                if(j == 3 || j == 6) System.out.print(" ");
+                if(j == 3 || j == 6) System.out.print(" "); // tarpai tarp 3 x 3 cubu i sona
                 System.out.print(myArray[i][j] + " ");
             }
             System.out.println();
         }
     }
 
-    public static void game (int rows, int columns, int [][] myArray) {
+    private static void game (int [][] myArray)
+    {
         Scanner input = new Scanner(System.in);
-        int i, j, skaicius;
-        i = input.nextInt();
-        j = input.nextInt();
-        if(myArray[i][j] == 0) { //jeigu tinkamoje vietoje pasirinkta ir ne uz ribu lentos  && myArray[ii][jj] < 10 && myArray[ii][jj] > 0
-             skaicius = input.nextInt();
-             if(skaicius > 0 && skaicius < 10){
-                 myArray[i][j] = skaicius;
-                 board(rows, columns, myArray);
-             }
+        int kiekis = 0;
+        while(kiekis < 81)
+        {
+            int i, j, skaicius;
+            i = input.nextInt();
+            j = input.nextInt();
 
+            if(i == 10 && j == 10){ // komanda ivedus isiveda istrynimo funkcija
+                System.out.println("Iveskite kuri skaiciu norite istrinti");
+                i = input.nextInt(); // ivesti ka norim istrinti
+                j = input.nextInt();
+                myArray[i][j] = 0;
+                System.out.println("Sekmingai istrintas skaicius");
+                board(myArray);
+                System.out.println("Toliau tesiamas zaidimas, iveskite kur norite ivesti skaiciu");
+                i = input.nextInt(); // is naujo vedimas toliau zaidimo
+                j = input.nextInt();
+            }
+            if(myArray[i][j] == 0) { //jeigu tinkamoje vietoje pasirinkta
+                skaicius = input.nextInt();
+                if(skaicius > 0 && skaicius < 10){ // jei ne uz lentos ribu
+                    myArray[i][j] = skaicius;
+                    board(myArray);
+                }
+
+            }
+
+            else {
+                System.out.println("Uzimta vieta arba uz lentos ribu");
+            }
+
+            kiekis = 0;
+            for(int a = 0; a < 9; a++)
+            {
+                for(int b = 0; b < 9; b++)
+                {
+                    if(myArray[a][b] != 0) kiekis++;
+                }
+
+            }
+                if(kiekis == 81) // 9 x 9 jeigu viskas uzpildyta tai pasibaige zaidimas (taisykles bus kur patikrina ar viskas tinka)
+                {
+                    System.out.println("Laimejote zaidima"); //check kiekviena eilute ir kuba ar atitinka
+                }
+            }
         }
 
-        else {
-            System.out.println("Uzimta vieta arba uz lentos ribu");
-        }
-        //System.out.println(ANSI_GREEN_BACKGROUND + "This text has a green background but default text!" + ANSI_RESET);
-
-
-
-        // padaryti default
     }
 
 
 
-}
+
 
 
 //private static Scanner x;
@@ -159,3 +200,4 @@ public class Main {
 
     }
      */
+
